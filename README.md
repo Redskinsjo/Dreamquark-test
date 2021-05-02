@@ -4,9 +4,7 @@ Projet front
 
 # Visit the site in production
 
-https://dreamquark-test.netlify.app/
-or
-https://dreamquark-test.vercel.app/
+Not available yet
 
 ## Libraries used
 
