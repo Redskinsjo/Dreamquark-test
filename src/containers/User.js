@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -31,7 +31,25 @@ export default function User() {
 
   // Fetch data for this user
 
-  const fetchUserData = async () => {
+  // const fetchUserData = async () => {
+  //   try {
+  //     const { status, data } = await axios.get(
+  //       `https://dreamquark-rest-api.herokuapp.com/user/${params.id}`
+  //     );
+  //     if (status === 200) {
+  //       setEmail(data.email);
+  //       setFirstname(data.firstname);
+  //       setLastname(data.lastname);
+  //       setRole(data.role);
+  //       setTeam(data.team);
+  //       setIsLoading(false);
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
+
+  const fetchUserData = useCallback(async () => {
     try {
       const { status, data } = await axios.get(
         `https://dreamquark-rest-api.herokuapp.com/user/${params.id}`
@@ -47,7 +65,7 @@ export default function User() {
     } catch (error) {
       console.log(error.message);
     }
-  };
+  }, [params.id]);
 
   useEffect(() => {
     fetchUserData();

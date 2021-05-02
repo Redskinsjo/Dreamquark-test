@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import {
@@ -10,7 +10,7 @@ export default function UserForm({ setNotif }) {
   const [email, setEmail] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [organisation, setOrganisation] = useState("");
+  const [ORGANISATION, setOrganisation] = useState("");
   const [team, setTeam] = useState("");
   const [role, setRole] = useState("");
 
@@ -23,9 +23,22 @@ export default function UserForm({ setNotif }) {
 
   // Filter the teams depending on the organisation chosen
 
-  const fetchTeamsAvailable = () => {
+  // const fetchTeamsAvailable = () => {
+  //   const orgChosen = organisations.find(
+  //     (org) => org.name.toLowerCase() === ORGANISATION.toLowerCase()
+  //   );
+
+  //   let teams;
+  //   if (orgChosen) {
+  //     teams = [...orgChosen.teams];
+  //   }
+
+  //   setTeamsAvailable(teams);
+  // };
+
+  const fetchTeamsAvailable = useCallback(() => {
     const orgChosen = organisations.find(
-      (org) => org.name.toLowerCase() === organisation.toLowerCase()
+      (org) => org.name.toLowerCase() === ORGANISATION.toLowerCase()
     );
 
     let teams;
@@ -34,11 +47,11 @@ export default function UserForm({ setNotif }) {
     }
 
     setTeamsAvailable(teams);
-  };
+  }, [organisations, ORGANISATION]);
 
   useEffect(() => {
     fetchTeamsAvailable();
-  }, [organisation]);
+  }, [fetchTeamsAvailable]);
 
   // Function which create item in DB and update global state
 

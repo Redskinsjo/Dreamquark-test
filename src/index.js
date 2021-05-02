@@ -4,8 +4,8 @@ import "./index.css";
 import App from "./App";
 
 // Commented are the code using Redux
-import { Provider } from "react-redux";
-import store from "./context/store";
+// import { Provider } from "react-redux";
+// import store from "./context/store";
 
 // Here would have been a store.dispatch(fetchData())
 
