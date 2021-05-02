@@ -34,7 +34,7 @@ export default function User() {
   const fetchUserData = async () => {
     try {
       const { status, data } = await axios.get(
-        `http://localhost:3030/user/${params.id}`
+        `https://dreamquark-rest-api.herokuapp.com/user/${params.id}`
       );
       if (status === 200) {
         setEmail(data.email);
@@ -80,7 +80,7 @@ export default function User() {
     // ------------------------
 
     const { status, data } = await axios.post(
-      `http://localhost:3030/user/${params.id}/modify`,
+      `https://dreamquark-rest-api.herokuapp.com/user/${params.id}/modify`,
       {
         email,
         firstname,
@@ -91,7 +91,9 @@ export default function User() {
     );
     if (status === 200) {
       // Update global state after success modification
-      const { status, data } = await axios.get("http://localhost:3030/data");
+      const { status, data } = await axios.get(
+        "https://dreamquark-rest-api.herokuapp.com/data"
+      );
 
       if (status === 200) {
         dispatch({ type: "FETCH_DATA", payload: { ...data } });

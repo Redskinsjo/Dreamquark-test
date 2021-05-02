@@ -15,7 +15,7 @@ export default function UserForm({ setNotif }) {
 
     try {
       const { status, data } = await axios.post(
-        "http://localhost:3030/organisation/create",
+        "https://dreamquark-rest-api.herokuapp.com/create",
         {
           name,
           // ajout d'un tableau d'équipes en API
