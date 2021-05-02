@@ -12,7 +12,7 @@ export default function User() {
   const params = useParams();
 
   // Global State destructuring
-  const { users, teams } = useContext(GlobalStateProvider);
+  const { teams } = useContext(GlobalStateProvider);
   const dispatch = useContext(GlobalDispatchProvider);
 
   const [email, setEmail] = useState("");
@@ -51,7 +51,7 @@ export default function User() {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [fetchUserData]);
 
   const handleModification = async (e) => {
     e.preventDefault();
@@ -79,7 +79,7 @@ export default function User() {
     // });
     // ------------------------
 
-    const { status, data } = await axios.post(
+    const { status } = await axios.post(
       `https://dreamquark-rest-api.herokuapp.com/user/${params.id}/modify`,
       {
         email,
@@ -183,14 +183,15 @@ export default function User() {
               {team[0].toUpperCase() + team.slice(1)}
             </option>
             {teams &&
-              teams.map((option, index) => {
-                if (option.name === team) return;
-                return (
-                  <option key={index} value={option.name.toLowerCase()}>
-                    {option.name[0].toUpperCase() + option.name.slice(1)}
-                  </option>
-                );
-              })}
+              teams
+                .filter((team) => team.name !== team)
+                .map((option, index) => {
+                  return (
+                    <option key={index} value={option.name.toLowerCase()}>
+                      {option.name[0].toUpperCase() + option.name.slice(1)}
+                    </option>
+                  );
+                })}
           </select>
           <div className="flex justify-end my-8">
             <button type="submit" className="py-2 px-4 bg-blue-300">

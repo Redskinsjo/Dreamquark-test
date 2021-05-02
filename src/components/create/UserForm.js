@@ -37,7 +37,7 @@ export default function UserForm({ setNotif }) {
   };
 
   useEffect(() => {
-    if (organisations) fetchTeamsAvailable();
+    fetchTeamsAvailable();
   }, [organisation]);
 
   // Function which create item in DB and update global state
