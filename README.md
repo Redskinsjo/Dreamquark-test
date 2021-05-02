@@ -29,21 +29,21 @@ DB:
 ## To start
 
 1. Clone the project with :
-
+```js
 git clone https://github.com/Redskinsjo/Dreamquark-test
-
+```
 2. Navigate toward the folder :
-
+```js
 cd Dreamquark-test/
-
+```
 3. Install the dependencies avec :
-
+```js
 yarn install
-
+```
 4. Developp the project locally with :
-
+```js
 yarn start
-
+```
 ## Functions
 
 - Create Users, Teams or Organisations on a MongoDB database
