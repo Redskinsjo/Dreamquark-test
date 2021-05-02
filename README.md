@@ -20,7 +20,7 @@ Back:
 [API Express for fetching data](https://github.com/Redskinsjo/Dreamquark-REST-api)
 - Express
 
-[API GraphQL for fetching data()
+[API GraphQL for fetching data](https://github.com/Redskinsjo/Dreamquark-GraphQL-api)
 - GraphQL
 
 DB:
