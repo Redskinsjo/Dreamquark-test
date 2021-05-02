@@ -32,6 +32,7 @@ export default function UserForm({ setNotif }) {
           entity: "organisation",
           payload: data,
         });
+        // Pas besoin de fetcher toute la data car les organisations ne sont pas représetées dans l'app, elles dépendent d'une équipe
       } else {
         console.log("Erreur lors de la création de l'organisation");
       }

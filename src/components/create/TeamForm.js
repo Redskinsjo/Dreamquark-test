@@ -20,7 +20,7 @@ export default function UserForm({ setNotif }) {
     e.preventDefault();
 
     try {
-      const { status, data } = await axios.post(
+      const { status } = await axios.post(
         "https://dreamquark-rest-api.herokuapp.com/team/create",
         {
           name,
