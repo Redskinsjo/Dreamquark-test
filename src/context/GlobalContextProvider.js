@@ -76,7 +76,7 @@ export default function GlobalContextProvider({ children }) {
   // fetch global state data after mounting from Express API and import it in global state
   const fetchData = async () => {
     const { status, data } = await axios.get(
-      "https://dreamquark-rest-api.herokuapp.com/data"
+      process.env.REACT_APP_API_REST_URI + "/data"
     );
 
     if (status === 200) {

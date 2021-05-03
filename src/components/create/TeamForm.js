@@ -21,7 +21,7 @@ export default function UserForm({ setNotif }) {
 
     try {
       const { status } = await axios.post(
-        "https://dreamquark-rest-api.herokuapp.com/team/create",
+        process.env.REACT_APP_API_REST_URI + "/team/create",
         {
           name,
           organisation,
@@ -33,7 +33,7 @@ export default function UserForm({ setNotif }) {
 
         setNotif({ form: "team" });
         const { status, data } = await axios.get(
-          "https://dreamquark-rest-api.herokuapp.com/data"
+          process.env.REACT_APP_API_REST_URI + "/data"
         );
 
         if (status === 200) {

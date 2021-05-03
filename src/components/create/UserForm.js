@@ -60,7 +60,7 @@ export default function UserForm({ setNotif }) {
 
     try {
       const { status } = await axios.post(
-        "https://dreamquark-rest-api.herokuapp.com/user/create",
+        process.env.REACT_APP_API_REST_URI + "/user/create",
         {
           email,
           firstname,
@@ -78,7 +78,7 @@ export default function UserForm({ setNotif }) {
 
         setNotif({ form: "user" });
         const { status, data } = await axios.get(
-          "https://dreamquark-rest-api.herokuapp.com/data"
+          process.env.REACT_APP_API_REST_URI + "/data"
         );
 
         if (status === 200) {
