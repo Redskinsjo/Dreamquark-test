@@ -75,12 +75,16 @@ export default function GlobalContextProvider({ children }) {
 
   // fetch global state data after mounting from Express API and import it in global state
   const fetchData = async () => {
-    const { status, data } = await axios.get(
-      process.env.REACT_APP_API_REST_URI + "/data"
-    );
+    try {
+      const { status, data } = await axios.get(
+        process.env.REACT_APP_API_REST_URI + "/data"
+      );
 
-    if (status === 200) {
-      dispatch({ type: "FETCH_DATA", payload: { ...data } });
+      if (status === 200) {
+        dispatch({ type: "FETCH_DATA", payload: { ...data } });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
