@@ -15,7 +15,7 @@ export default function UserForm({ setNotif }) {
 
     try {
       const { status, data } = await axios.post(
-        process.env.REACT_APP_API_REST_URI + "/create",
+        process.env.REACT_APP_API_REST_URI + "/organisation/create",
         {
           name,
           // ajout d'un tableau d'équipes en API
