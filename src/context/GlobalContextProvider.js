@@ -81,7 +81,7 @@ export default function GlobalContextProvider({ children }) {
       );
 
       if (status === 200) {
-        dispatch({ type: "FETCH_DATA", payload: { ...data } });
+        dispatch({ type: "FETCH_DATA", payload: data });
       }
     } catch (err) {
       console.log(err);
