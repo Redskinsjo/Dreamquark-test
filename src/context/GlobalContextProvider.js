@@ -11,7 +11,7 @@ const initialState = {
   isLoading: true,
 };
 
-const reducer = (state, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "FETCH_DATA":
       return {
