@@ -23,19 +23,6 @@ export default function UserForm({ setNotif }) {
 
   // Filter the teams depending on the organisation chosen
 
-  // const fetchTeamsAvailable = () => {
-  //   const orgChosen = organisations.find(
-  //     (org) => org.name.toLowerCase() === ORGANISATION.toLowerCase()
-  //   );
-
-  //   let teams;
-  //   if (orgChosen) {
-  //     teams = [...orgChosen.teams];
-  //   }
-
-  //   setTeamsAvailable(teams);
-  // };
-
   const fetchTeamsAvailable = useCallback(() => {
     const orgChosen = organisations.find(
       (org) => org.name.toLowerCase() === ORGANISATION.toLowerCase()
@@ -53,6 +40,34 @@ export default function UserForm({ setNotif }) {
     fetchTeamsAvailable();
   }, [fetchTeamsAvailable]);
 
+  // const fetchOrgs = async () => {
+  //   const organisations = {
+  //     query: `
+  //     query {
+  //       organisations {
+  //         _id
+  //         name
+  //       }
+  //     }
+  //     `,
+  //   };
+  //   try {
+  //     const { status, data } = await axios({
+  //       url: "http://localhost:3000/graphql",
+  //       method: "post",
+  //       data: organisations,
+  //     });
+  //     console.log(data);
+  //     console.log(status);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchOrgs();
+  // });
+
   // Function which create item in DB and update global state
 
   const handleCreate = async (e) => {
@@ -69,6 +84,7 @@ export default function UserForm({ setNotif }) {
           role,
         }
       );
+
       if (status === 200) {
         setEmail("");
         setFirstname("");
@@ -77,12 +93,50 @@ export default function UserForm({ setNotif }) {
         setRole("");
 
         setNotif({ form: "user" });
-        const { status, data } = await axios.get(
-          process.env.REACT_APP_API_REST_URI + "/data"
-        );
+
+        const body = {
+          query: `
+          query {
+            data {
+              users {
+                _id
+                firstname
+                lastname
+                team
+                role
+              }
+              teams {
+                _id
+                name
+                organisation
+                users {
+                  _id
+                  firstname
+                  lastname
+                  team
+                  role
+                }
+              }
+              organisations {
+                _id
+                name
+                teams {
+                  _id
+                  name
+                }
+              }
+            }
+          }
+          `,
+        };
+        const { status, data } = await axios({
+          method: "post",
+          url: process.env.REACT_APP_API_GRAPHQL_URI + "/graphql",
+          data: body,
+        });
 
         if (status === 200) {
-          dispatch({ type: "FETCH_DATA", payload: { ...data } });
+          dispatch({ type: "FETCH_DATA", payload: data.data.data });
         }
       }
     } catch (error) {

@@ -20,6 +20,7 @@ export default function User() {
   const [lastname, setLastname] = useState("");
   const [role, setRole] = useState("");
   const [team, setTeam] = useState("");
+  const [previousTeam, setPreviousTeam] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [roleOptions, setRoleOptions] = useState(
     !isLoading && role === "stagiaire"
@@ -60,6 +61,7 @@ export default function User() {
         setLastname(data.lastname);
         setRole(data.role);
         setTeam(data.team);
+        setPreviousTeam(data.team);
         setIsLoading(false);
       }
     } catch (error) {
@@ -74,52 +76,72 @@ export default function User() {
   const handleModification = async (e) => {
     e.preventDefault();
 
-    // Example of a request with GraphQL. Please uncomment following code to see
-    // ------------------------
-    // const body = {
-    //   query: `
-    //     mutation {
-    //       modifyUser(id: "${params.id}", data: {email:"${email}", firstname: "${firstname}", lastname: "${lastname}", team: "${team}",   role: "${role}"}) {
-    //     email
-    //     firstname
-    //     lastname
-    //     team
-    //     role
-    //   }
-    //     }
-    //   `,
-    // };
-    // const { status, data } = await axios({
-    //   url: "http://localhost:3000/graphql",
-    //   method: "post",
-    //   body: JSON.stringify(body),
-    //   headers: { "Content-Type": "application/json" },
-    // });
-    // ------------------------
-
-    const { status } = await axios.post(
-      `${process.env.REACT_APP_API_REST_URI}/user/${params.id}/modify`,
-      {
-        email,
-        firstname,
-        lastname,
-        role,
-        team,
-      }
-    );
-    if (status === 200) {
-      // Update global state after success modification
-      const { status, data } = await axios.get(
-        process.env.REACT_APP_API_REST_URI + "/data"
+    try {
+      const { status } = await axios.post(
+        `${process.env.REACT_APP_API_REST_URI}/user/${params.id}/modify`,
+        {
+          email,
+          firstname,
+          lastname,
+          role,
+          team,
+          previousTeam,
+        }
       );
-
       if (status === 200) {
-        dispatch({ type: "FETCH_DATA", payload: { ...data } });
-      }
+        // Update global state after success modification
+        const body = {
+          query: `
+          query {
+            data {
+              users {
+                _id
+                firstname
+                lastname
+                team
+                role
+              }
+              teams {
+                _id
+                name
+                organisation
+                users {
+                  _id
+                  firstname
+                  lastname
+                  team
+                  role
+                }
+              }
+              organisations {
+                _id
+                name
+                teams {
+                  _id
+                  name
+                }
+              }
+            }
+          }
+          `,
+        };
+        const { status, data } = await axios({
+          method: "post",
+          url: process.env.REACT_APP_API_GRAPHQL_URI + "/graphql",
+          data: body,
+        });
+        console.log("line 133", data);
 
-      message.success("The user was well modified");
-    } else {
-      message.error("Something went wrong. The user was not modified.");
+        if (status === 200) {
+          dispatch({ type: "FETCH_DATA", payload: data.data.data });
+        }
+
+        message.success("The user was well modified");
+      } else {
+        message.error("Something went wrong. The user was not modified.");
+      }
+    } catch (error) {
+      console.log(error.response);
     }
   };
 
@@ -196,10 +218,8 @@ export default function User() {
             onChange={(e) => {
               setTeam(e.target.value);
             }}
+            defaultValue={previousTeam}
           >
-            <option value={team.toLowerCase()}>
-              {team[0].toUpperCase() + team.slice(1)}
-            </option>
             {teams &&
               teams
                 .filter((team) => team.name !== team)

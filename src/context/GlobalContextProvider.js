@@ -76,12 +76,49 @@ export default function GlobalContextProvider({ children }) {
   // fetch global state data after mounting from Express API and import it in global state
   const fetchData = async () => {
     try {
-      const { status, data } = await axios.get(
-        process.env.REACT_APP_API_REST_URI + "/data"
-      );
+      const body = {
+        query: `
+        query {
+          data {
+            users {
+              _id
+              firstname
+              lastname
+              team
+              role
+            }
+            teams {
+              _id
+              name
+              organisation
+              users {
+                _id
+                firstname
+                lastname
+                team
+                role
+              }
+            }
+            organisations {
+              _id
+              name
+              teams {
+                _id
+                name
+              }
+            }
+          }
+        }
+        `,
+      };
+      const { status, data } = await axios({
+        method: "post",
+        url: process.env.REACT_APP_API_GRAPHQL_URI + "/graphql",
+        data: body,
+      });
 
       if (status === 200) {
-        dispatch({ type: "FETCH_DATA", payload: data });
+        dispatch({ type: "FETCH_DATA", payload: data.data.data });
       }
     } catch (err) {
       console.log(err);
